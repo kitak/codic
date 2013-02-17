@@ -1,6 +1,6 @@
 # Codic
 
-TODO: Write a gem description
+Simple access webservice "codic"
 
 ## Installation
 
@@ -18,7 +18,10 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+execute as command    
+```
+codic something_word
+```
 
 ## Contributing
 
