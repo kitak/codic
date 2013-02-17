@@ -3,11 +3,23 @@ require "codic/version"
 require "uri"
 require "open-uri"
 require "nokogiri"
+require "json"
 
 module Codic
   URL_ROOT = "http://codic.jp"
   class << self
-    def suggest(word)
+    def suggest(word, dic)
+      res =  JSON.parse(open(URI.encode("#{Codic::URL_ROOT}/suggest?q=#{word}&dic=#{dic}"),
+                        "Accept" => "application/json, text/javascript, */*; q=0.01",
+                        "X-Requested-With" => "XMLHttpRequest").read)
+      res["titles"].map! { |t| t.gsub(/\<\/?mark\>/, '') }
+      res["titles"].zip(res["descriptions"], res["urls"]).map do |t, d, u|
+        {
+          title: t,
+          description: d,
+          url: u
+        }
+      end
     end
 
     def search(word)
@@ -59,4 +71,6 @@ end
 if __FILE__ == $0
   puts Codic.search("access")
   puts Codic.search("検証する")
+  puts Codic.suggest("検証す", "naming")
+  puts Codic.suggest("red", "english")
 end
