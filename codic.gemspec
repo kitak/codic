@@ -8,9 +8,9 @@ Gem::Specification.new do |gem|
   gem.version       = Codic::VERSION
   gem.authors       = ["Keisuke KITA"]
   gem.email         = ["kei.kita2501@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{simple access codic via terminal}
+  gem.summary       = %q{simple access codinc via terminal}
+  gem.homepage      = "https://github.com/kitak/codic"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
