@@ -1,3 +1,33 @@
 #!/usr/bin/env ruby
 
 require 'codic'
+
+module Codic
+  class << self
+    def search_or_suggest(word)
+      begin
+        Codic.display(Codic.search(word))
+      rescue CodicError
+        Codic.display(Codic.suggest(word, suggest_dic(word)))
+      end
+    end
+
+    def suggest_dic(word)
+      if /\A[a-zA-Z].*\Z/o =~ word
+        :english
+      else
+        :naming
+      end
+    end
+  end
+end
+
+if ARGV.empty?
+  while word = $STDIN.gets
+    Codic.search_or_suggest(word.chomp)
+    puts "-"*60
+  end
+else
+  Codic.search_or_suggest(ARGV[0])
+end
+
