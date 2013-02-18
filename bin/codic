@@ -23,10 +23,13 @@ module Codic
 end
 
 if ARGV.empty?
-  while word = $STDIN.gets
+  while word = STDIN.gets
     Codic.search_or_suggest(word.chomp)
     puts "-"*60
   end
+elsif ARGV.size == 2 && ARGV[0] == "suggest"
+  word = ARGV[1].chomp
+  Codic.display(Codic.suggest(word, Codic.suggest_dic(word)))
 else
   Codic.search_or_suggest(ARGV[0])
 end
