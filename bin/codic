@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'codic'
+require 'codic/cli'
 
 module Codic
   class << self
@@ -23,13 +24,15 @@ module Codic
 end
 
 if ARGV.empty?
-  while word = STDIN.gets
-    Codic.search_or_suggest(word.chomp)
-    puts "-"*60
-  end
-elsif ARGV.size == 2 && ARGV[0] == "suggest"
+  Codic::CLI.start
+elsif ARGV.size == 2
   word = ARGV[1].chomp
-  Codic.display(Codic.suggest(word, Codic.suggest_dic(word)))
+  case word 
+  when "search"
+    Codic.display(Codic.search(word))
+  when "suggest"
+    Codic.display(Codic.suggest(word, Codic.suggest_dic(word)))
+  end
 else
   Codic.search_or_suggest(ARGV[0])
 end
