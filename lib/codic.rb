@@ -60,8 +60,15 @@ module Codic
           puts result[:flections] 
           puts
         end
+        puts "# 検索結果" unless result[:words].empty?
         result[:words].each do |w|
-          puts "#{w[:no]}. #{w[:translated]} [#{w[:class_ja]}]" 
+          class_ja = w[:class_ja].empty? ? "" : "（#{w[:class_ja]}）"
+          puts "#{w[:no]}. #{w[:translated]} #{class_ja}" 
+        end
+
+        puts "\n# 関連" unless result[:relations].empty?
+        result[:relations].each do |r|
+          puts "#{r[:seltext]} #{r[:digest]} #{r[:description]}"
         end
       when "naming"
         result[:words].each do |w|
@@ -100,10 +107,19 @@ module Codic
         }
       end
 
+      relations = @doc.css("#relations .entries li").map do |r|
+        {
+          seltext: r.at('.seltext').content,
+          digest: r.at('.digest').content,
+          description: r.at('.description').content
+        }
+      end
+
       {
         type: "english",
         flections: flections,
-        words: words
+        words: words,
+        relations: relations
       }
     end
 
