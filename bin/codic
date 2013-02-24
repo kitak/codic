@@ -6,11 +6,8 @@ require 'codic/cli'
 module Codic
   class << self
     def search_or_suggest(word)
-      begin
-        Codic.display(Codic.search!(word))
-      rescue CodicError
-        Codic.display(Codic.suggest(word, suggest_dic(word)))
-      end
+      content = Codic.search(word) || Codic.suggest(word, suggest_dic(word))
+      Codic.display(content)
     end
 
     def suggest_dic(word)

@@ -9,8 +9,6 @@ require "json"
 module Codic
   URL_ROOT = "http://codic.jp"
 
-  class CodicError < StandardError; end
-
   module ContentCushion 
     def content 
       ""
@@ -38,19 +36,6 @@ module Codic
         type: "suggest",
         suggests: suggests
       }
-    end
-
-    def search!(word)
-      raise ArgumentError, "word is empty" if word.gsub(/\s/, "") == ""
-      @doc = Nokogiri::HTML(open(URI.encode("#{Codic::URL_ROOT}/search?q=#{word}")))
-      raise CodicError, "Not Found" unless found?
-
-      case entry_type 
-      when "english"
-        analyse_english
-      when "naming"
-        analyse_naming
-      end
     end
 
     def search(word)
