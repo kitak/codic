@@ -40,7 +40,7 @@ module Codic
       }
     end
 
-    def search(word)
+    def search!(word)
       raise ArgumentError, "word is empty" if word.gsub(/\s/, "") == ""
       @doc = Nokogiri::HTML(open(URI.encode("#{Codic::URL_ROOT}/search?q=#{word}")))
       raise CodicError, "Not Found" unless found?
@@ -53,7 +53,22 @@ module Codic
       end
     end
 
+    def search(word)
+      raise ArgumentError, "word is empty" if word.gsub(/\s/, "") == ""
+      @doc = Nokogiri::HTML(open(URI.encode("#{Codic::URL_ROOT}/search?q=#{word}")))
+      return nil unless found?
+
+      case entry_type 
+      when "english"
+        analyse_english
+      when "naming"
+        analyse_naming
+      end
+    end
+
     def display(result)
+      return unless result
+
       case result[:type]
       when "english"
         unless result[:flections] == ""

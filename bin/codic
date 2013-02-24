@@ -7,7 +7,7 @@ module Codic
   class << self
     def search_or_suggest(word)
       begin
-        Codic.display(Codic.search(word))
+        Codic.display(Codic.search!(word))
       rescue CodicError
         Codic.display(Codic.suggest(word, suggest_dic(word)))
       end
